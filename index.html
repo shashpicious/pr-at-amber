@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipping PRs at Amber: a playbook from the design team</title>
+<style>
+  :root {
+    --bg: #faf8f3;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --rule: #e8e3d6;
+    --code-bg: #f0ebde;
+    --code-text: #7a3d52;
+    --accent: #a6541e;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161513;
+      --text: #ece7dc;
+      --muted: #9a948a;
+      --rule: #2c2924;
+      --code-bg: #25221d;
+      --code-text: #d8a8b9;
+      --accent: #d89150;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body {
+    font-family: "Iowan Old Style", "Charter", "Georgia", ui-serif, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  article {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 80px 28px 120px;
+  }
+
+  h1 {
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    font-size: 2.1rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    margin: 0 0 2.4em 0;
+    color: var(--text);
+  }
+
+  h2 {
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    font-size: 1.4rem;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    font-weight: 700;
+    margin: 0.4em 0 1em 0;
+    color: var(--text);
+  }
+
+  .framer {
+    font-style: italic;
+    color: var(--muted);
+    margin: 0 0 1.6em 0;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 0 0 1.2em 0;
+  }
+
+  ul, ol {
+    margin: 0 0 1.4em 0;
+    padding-left: 1.4em;
+  }
+
+  li {
+    margin-bottom: 0.5em;
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+
+  strong {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 0.12em 0.4em;
+    border-radius: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 3em 0;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .lead {
+    margin-bottom: 1em;
+  }
+
+  .lead strong {
+    color: var(--text);
+  }
+
+  .closer {
+    margin-top: 3em;
+  }
+
+  .cover {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+    margin: 0 0 3em 0;
+    border: 1px solid var(--rule);
+  }
+
+  figure {
+    margin: 2em 0;
+  }
+
+  figure img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    border: 1px solid var(--rule);
+  }
+
+  figcaption {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-top: 0.7em;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .signature {
+    margin-top: 3em;
+    text-align: left;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .signature .name {
+    color: var(--text);
+  }
+
+  @media (max-width: 480px) {
+    body { font-size: 17px; }
+    article { padding: 56px 22px 96px; }
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<article>
+
+<img class="cover" src="images/cover.png" alt="A designer at a warm-lit desk working in a code editor, photographs pinned across the wall behind them">
+
+<h1>Shipping PRs at Amber: a playbook from the design team</h1>
+
+<p>Over the last few months a few of us on the design team have been shipping PRs across our codebase. Between us we've covered UI cleanups, full features, and end-to-end frontends on a couple of dashboards.</p>
+
+<p>This is the playbook for the rest of the team. The repos that matter at Amber, the conventions we follow, the specific channels you'll need. If you've been meaning to start, here's the order to do it in.</p>
+
+<p>If anything in here loses you, paste it into Cursor (or Claude) and ask what it means. Use AI shamelessly throughout.</p>
+
+<hr>
+
+<h2>1. Get access and run the app</h2>
+
+<p>Ping <a href="https://amberstudent.slack.com/team/U08394DJU4C">Rajat</a> in DevOps to be added to the GitHub org and the repos you'll need. The ones we touch most:</p>
+
+<ul>
+  <li><code>amber-user-website</code> — amberstudent.com (consumer site)</li>
+  <li><code>amber-partners</code> — Flex and Connect 2.0 (partner dashboard)</li>
+  <li><code>s.web</code> — older partner-facing stuff (monorepo)</li>
+  <li><code>s.base</code> — Ruby backend (less likely for a designer PR)</li>
+</ul>
+
+<p>There are more, but these are where most of our PRs land. Turn on 2FA on your GitHub account. Set up an SSH key. Any engineer on the team can walk you through it in five minutes.</p>
+
+<p>Once you have access, clone the repo and open it in Cursor.</p>
+
+<p>Before you run anything, three things to figure out:</p>
+
+<ul>
+  <li><strong>Package manager varies by repo.</strong> <code>amber-partners</code> uses pnpm. <code>s.web</code> uses npm. <code>amber-user-website</code> has both <code>package-lock.json</code> and <code>yarn.lock</code> in the repo, so ask in #engineering which one we actually use before running install. Don't mix package managers.</li>
+  <li><strong>Node version.</strong> Look for <code>.nvmrc</code> or the <code>"engines"</code> field in <code>package.json</code>. Install nvm (node version manager), then run <code>nvm use</code>.</li>
+  <li><strong>Env vars.</strong> Copy <code>.env.example</code> to <code>.env.local</code>. These are secret keys the app needs (API keys, DB URLs). Ping [#engineering] for the actual values. Never commit these.</li>
+</ul>
+
+<figure>
+  <img src="images/env-files.png" alt="File tree showing .env.example highlighted and pnpm-lock.yaml at the bottom">
+  <figcaption>What you're looking for in the root of the repo: <code>.env.example</code> to copy, and the lockfile to identify the package manager (here <code>pnpm-lock.yaml</code> means pnpm).</figcaption>
+</figure>
+
+<p>Then run install, then dev. <code>npm install</code> (or whatever the lockfile says), then <code>npm run dev</code>. Check the <code>"scripts"</code> block in <code>package.json</code> to be sure. Open the URL it prints.</p>
+
+<p>You will hit at least one of these on day one:</p>
+
+<ul>
+  <li>Wrong node version. Run <code>nvm use</code>.</li>
+  <li>Missing <code>.env</code> value. Ask which one in [#engineering].</li>
+  <li>Port already in use. Kill the process on that port, or change the port.</li>
+  <li>"Module not found". Re run install.</li>
+</ul>
+
+<p>When something breaks, paste the exact error into Cursor's chat (<code>Cmd+L</code>) and ask what it means before you ping a human. Cursor nails nine out of ten setup errors. When it can't help, ping [#engineering] with the exact error, the file and line, and what you already tried.</p>
+
+<p>When the dev server runs, open a file you can identify on the page (the navbar component is a good first target). Change a single character somewhere safe. Save. Confirm the page hot-reloads in your browser with the new character visible. That's the loop: code on your laptop, app in your browser, change shows up.</p>
+
+<hr>
+
+<h2>2. Learn just enough git</h2>
+
+<p>In most of our frontend repos, <code>staging</code> is the working branch, not <code>main</code>. You branch off <code>staging</code>, push your branch, and open a PR back into <code>staging</code>. Each repo has its own production branch (<code>release</code> for <code>amber-user-website</code>, <code>main</code> for <code>amber-partners</code>, <code>production</code> for <code>s.web</code>) which staging flows into. Five commands cover the loop.</p>
+
+<ul>
+  <li><code>git checkout staging</code>. Go to the working branch.</li>
+  <li><code>git pull origin staging</code>. Get the latest from GitHub.</li>
+  <li><code>git checkout -b POD3-1234-fix-tooltip-typo</code>. Make your own branch using your ticket ID as the prefix.</li>
+  <li><code>git add .</code> then <code>git commit -m "POD3-1234 | fix: tooltip typo on settings"</code>. Save a checkpoint with the team's commit format.</li>
+  <li><code>git push</code>. Upload your branch to GitHub.</li>
+</ul>
+
+<p>And three rules:</p>
+
+<ul>
+  <li>Never commit to main directly. Always make a branch.</li>
+  <li>Never commit <code>.env</code>, <code>node_modules</code>, lockfiles you didn't touch, or anything generated.</li>
+  <li>If your branch gets weird, don't do surgery on it. Make a fresh branch off <code>main</code> and copy your changes over. Cheaper than fighting git.</li>
+</ul>
+
+<p>Bonus rule: any git message you don't understand, paste it into Cursor <em>before</em> you run another command. The wrong git command can wipe your work. The ones you'll hit most: "detached HEAD" (you committed to nowhere, Cursor will tell you how to save it), "merge conflict" (two people changed the same lines, open the file, look for the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> markers, pick which version stays), and "your branch is behind main" (run <code>git pull --rebase origin main</code>). Read first, run second.</p>
+
+<p>For branch and PR naming, we use the ticket ID as a prefix. Common prefixes you'll see: <code>POD3</code>, <code>P2</code>, <code>P1D</code>, <code>PLG</code>, <code>VP1</code>. These come from our ticket tracker. Your PM or your ticket will tell you which prefix applies. Branches: <code>POD3-1234-short-description</code>. PR titles: <code>POD3-1234 | feat: what changed</code> or <code>POD3-1234 | fix: what changed</code>. Look at the last 5 merged PRs in your repo to copy the exact format.</p>
+
+<figure>
+  <img src="images/pr-117-title.png" alt="GitHub PR titled POD3-0 | feat: platform UI revamp + Amber Connect surface at /connect/*, merged into staging">
+  <figcaption>Real example from <code>amber-partners</code>: ticket prefix, type, summary, all baked into the PR title. Note the base branch is <code>staging</code>, not <code>main</code>.</figcaption>
+</figure>
+
+<hr>
+
+<h2>3. Navigate the codebase</h2>
+
+<p>Three folders to find in Cursor. The paths vary slightly across our repos, the patterns hold.</p>
+
+<ul>
+  <li><strong>Components.</strong> In <code>amber-user-website</code> and <code>amber-partners</code>, the component folder is <code>src/components</code>. In <code>s.web</code> (which is a monorepo), shared UI lives in <code>packages/ui</code>.</li>
+  <li><strong>Routes.</strong> In <code>amber-user-website</code>: <code>src/pages</code> and <code>src/app</code> (mid-migration between routers). In <code>amber-partners</code>: <code>src/app</code>. In <code>s.web</code>: <code>apps/partner</code>, <code>apps/dashboard</code>, or <code>apps/website</code> depending on the surface.</li>
+  <li><strong>Theme / tokens.</strong> <code>amber-user-website</code> has <code>src/theme</code> for design tokens. Other repos keep theme files near their components.</li>
+</ul>
+
+<figure>
+  <img src="images/cursor-button.jpeg" alt="Cursor showing the components folder expanded with Button.module.scss highlighted and its CSS open in the editor">
+  <figcaption>Cursor's view: file tree on the left, the file open on the right. Most of the day-to-day happens through this.</figcaption>
+</figure>
+
+<p>Then trace one screen end to end. Pick something you know on a surface you'll be shipping to. Find the route file. It imports a page component. Open that. That imports more. Follow the chain.</p>
+
+<p>Read JSX bottom up. JSX is the HTML ish markup at the bottom of a component file. You can already read it: divs, buttons, props that look like CSS. Start there. Map JSX to what's on screen. <em>Then</em> trace upward to where the data comes from. Engineers usually read top down because they care about state and logic. You care about the rendered UI, so you read in reverse.</p>
+
+<p>When a file is too dense even bottom up, <code>@</code>-reference it in Cursor's chat and ask for a plain English walkthrough.</p>
+
+<p>Three Cursor shortcuts:</p>
+
+<ul>
+  <li><code>Cmd+Click</code> a component to jump to its definition.</li>
+  <li><code>Cmd+P</code> to jump to any file by name.</li>
+  <li><code>Cmd+Shift+F</code> to search the whole codebase.</li>
+</ul>
+
+<hr>
+
+<h2>4. Ship a tiny first PR</h2>
+
+<p>My first PR at Amber added a page transition animation. Reviewed and merged the same day.</p>
+
+<p>Pick something with zero risk for your first one.</p>
+
+<ul>
+  <li>A typo in a tooltip</li>
+  <li>Padding off by 2px</li>
+  <li>A hover state that doesn't match Figma</li>
+  <li>A missing <code>aria-label</code> (accessibility tag for screen readers)</li>
+  <li>Outdated copy in a button</li>
+</ul>
+
+<p>Before you open the PR, three checks:</p>
+
+<ol>
+  <li><strong>Run the team's checks locally.</strong> <code>npm run lint</code>, <code>npm run typecheck</code>, <code>npm test</code>. Check the <code>"scripts"</code> block in <code>package.json</code>. If any fail, fix them. CI runs the same things on your PR and a red PR can't merge.</li>
+  <li><strong>Check for <code>CONTRIBUTING.md</code> and <code>.github/PULL_REQUEST_TEMPLATE.md</code> in the repo.</strong> If they exist, follow them.</li>
+  <li><strong>Read 3 to 5 recently merged PRs in your area.</strong> Open the Pull Requests tab on the repo you're contributing to, filter by recent merges in the folder you're touching, and copy the conventions exactly. Branch naming, commit style, title format, description shape.</li>
+</ol>
+
+<p>Your PR description should have:</p>
+
+<ul>
+  <li>A one line summary at the top</li>
+  <li>What changed for the user</li>
+  <li>Before / after screenshots (use them, this is the part engineers most appreciate from us)</li>
+  <li>Edge cases or follow ups</li>
+</ul>
+
+<figure>
+  <img src="images/pr-description.jpeg" alt="A PR description with a Summary heading and a bulleted list of specific changes, file paths, and prop names">
+  <figcaption>A real PR description from our codebase: short Summary heading, bulleted changes, specific file and prop references. Copy this shape for yours.</figcaption>
+</figure>
+
+<p>If CI goes red, click "Details" on the failing check, read the error, fix locally, push again. If the error looks like a wall of red, paste the full log into Cursor with the file it's pointing at. CI failures almost always come down to one missing semicolon, one stray import, or one type mismatch. Don't force push your first PR. Just add commits.</p>
+
+<p>After your PR gets merged, do three things in the next ten minutes. Open the live site (staging or prod), find your change, take a before/after screenshot for your portfolio. Note how long the review took: that's the team's actual SLA for trivial PRs. Then open the merged PR and read your own diff end to end. The things you broke and didn't notice are sitting in there waiting for you.</p>
+
+<hr>
+
+<h2>5. Get fluent with Cursor</h2>
+
+<p>Most of what we use Cursor for falls into four modes. <strong>Explain</strong> ("walk me through this file") when you need to understand something before you touch it. <strong>Locate</strong> ("where in this codebase would I add a new toast variant?") when you know what you want to do but not where. <strong>Translate</strong> ("here's a stack trace, explain it for a designer") when an error message looks like noise. <strong>Draft</strong> ("change this Button's padding from 12 to 16 and update any variant that depends on it") when you know what you want and you want Cursor to write it for you. The same chat window (<code>Cmd+L</code>) handles all four.</p>
+
+<p>Before you change any code, ask Cursor first.</p>
+
+<ul>
+  <li>"Walk me through this file."</li>
+  <li>"What does this function do?"</li>
+  <li>"Where should I add X?"</li>
+  <li>"What breaks if I change Y to Z?"</li>
+</ul>
+
+<p>Give it context. <code>@</code>-reference specific files (<code>@Button.tsx</code>, <code>@connect/dashboard/page.tsx</code>). The more specific the context, the less it hallucinates. When the output's bad, the cause is almost always thin context. <code>@</code>-reference more files, paste the exact error, tell it the framework, tell it what you're trying to do for the user. Over share. Context is free.</p>
+
+<p>Use <code>Cmd+K</code> for inline edits inside a file. Let it draft, then read the diff (side by side of old vs new) before you accept.</p>
+
+<p>The trap: Cursor will confidently invent function names, props, and imports that don't exist, and it writes them with the same tone as real ones. <code>Cmd+Click</code> every new import it adds.</p>
+
+<p>The rule that keeps us out of trouble: you don't need to explain every line of what Cursor wrote, but you do need to explain the change. What it does, why this file, what could break. If you can't answer those three, ask Cursor more questions before you push.</p>
+
+<hr>
+
+<h2>6. Pair with an engineer</h2>
+
+<p>For typos and copy, just ship.</p>
+
+<p>For your first real change (tweaking a Button's variants, fixing a modal's focus trap, retokenizing a card) book 30 mins with a friendly engineer on your product team. Most of us have paired with @Saurav_50 at some point. [Add other engineers who are good to pair with — fill in.] Bring your branch ready to demo, not a blank screen.</p>
+
+<p>Three questions, every time:</p>
+
+<ul>
+  <li>"Is this the right place to put this?"</li>
+  <li>"What breaks if I change X to Y?"</li>
+  <li>"Any conventions I'm missing?"</li>
+</ul>
+
+<p>The point of pairing is to learn the team's taste. Which patterns we prefer, which file conventions we hold sacred, which "obvious" choices are actually contested. Every codebase has a dozen of these undocumented norms and you won't find them by reading the code.</p>
+
+<p>When no one's free, Cursor's a passable stand in reviewer. Paste your diff and ask "review this for a [Next.js, React Native, whatever] codebase, anything I'm missing, anything that could break elsewhere?" Not as good as a human review, but it catches the obvious stuff and lets you ship instead of waiting.</p>
+
+<hr>
+
+<p class="closer">On our team, more of the UI work is starting to ship as designer PRs. Small visual fixes, full features, and on a couple of surfaces the entire frontend. These are changes we used to hand off in Figma frames or Slack screenshots, and now they often close out with a merged PR instead.</p>
+
+<p>It's still early days. The work happens alongside everything else we already do (Figma, research, design reviews), not instead of it. Some weeks it's a single typo PR, other weeks a full feature. The mix is different for each of us, and there's no expectation about how much you ship to count as "part of this."</p>
+
+<p class="signature"><span class="name">ShashiK</span><br>Design Team</p>
+
+</article>
+</body>
+</html>
